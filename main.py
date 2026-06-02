@@ -3,7 +3,7 @@ Ponto de Entrada - Orbit Sentinel
 Orquestra os módulos do sistema, controla o loop de execução principal 
 e gerencia a injeção da persistência de dados.
 
-Autores (Equipe de Desenvolvimento):
+Autores:
 - Eduarda da Silva Brito
 - Gustavo Castilho Gonçalves
 - Gustavo Moretim Canzi
@@ -17,7 +17,6 @@ from medicoes_alertas import registrar_medicao
 from relatorios import listar_historico_medicoes, exibir_estatisticas
 
 def exibir_menu() -> None:
-    """Exibe as opções de navegação do sistema."""
     cabecalho("Menu Principal")
     print("\n  1. Cadastrar Novo Sensor")
     print("  2. Inventário de Sensores")
@@ -28,11 +27,9 @@ def exibir_menu() -> None:
     linha()
 
 def main() -> None:
-    """Função principal que inicializa o sistema e controla o estado."""
-    # Carga inicial de dados do arquivo JSON
+    # Ponto de entrada, carrega os dados e gerencia o loop do sistema
     banco_dados = carregar_dados()
     
-    # Referências para as listas em memória
     sensores = banco_dados.get("sensores", [])
     medicoes = banco_dados.get("medicoes", [])
 
@@ -46,7 +43,6 @@ def main() -> None:
         if opcao == "1":
             limpar_tela()
             cadastrar_sensor(sensores)
-            # Salva o estado imediatamente após a alteração para evitar perda de dados
             banco_dados["sensores"] = sensores
             salvar_dados(banco_dados)
 

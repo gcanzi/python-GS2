@@ -9,10 +9,6 @@ from utilidades import cabecalho, linha, pausar, pedir_inteiro, pedir_float
 from sensores import buscar_sensor
 
 def analisar_alerta(tipo_sensor: str, valor: float) -> str:
-    """
-    Motor de regras climáticas.
-    Avalia o valor medido com base no tipo de sensor e retorna o status de risco.
-    """
     tipo = tipo_sensor.strip().lower()
     
     if "temperatura" in tipo:
@@ -28,16 +24,14 @@ def analisar_alerta(tipo_sensor: str, valor: float) -> str:
             return "ALERTA CRÍTICO: Risco de Enchente"
             
     elif "fumaça" in tipo or "gas" in tipo or "gás" in tipo:
-        if valor >= 50.0: # Considerando um índice hipotético de qualidade do ar
+        if valor >= 50.0:
             return "ALERTA CRÍTICO: Alta Concentração de Fumaça"
             
     return "Normal"
 
 def registrar_medicao(medicoes: list, sensores: list) -> None:
-    """
-    Fluxo de registro de uma nova medição climática.
-    Exige a vinculação com um sensor previamente cadastrado.
-    """
+    # Registra a leitura de um sensor e dispara o motor de alertas
+    
     cabecalho("Registrar Nova Medição")
 
     if not sensores:
@@ -47,8 +41,7 @@ def registrar_medicao(medicoes: list, sensores: list) -> None:
         return
 
     id_sensor = pedir_inteiro("ID do Sensor correspondente")
-    
-    # Validação de integridade: O sensor existe?
+
     sensor = buscar_sensor(sensores, id_sensor)
     if sensor is None:
         print(f"\n  [!] Erro: Sensor com ID {id_sensor} não encontrado na infraestrutura.")
@@ -58,7 +51,6 @@ def registrar_medicao(medicoes: list, sensores: list) -> None:
     print(f"\n  [Sensor Localizado] Tipo: {sensor['tipo']} | Local: {sensor['local']}")
     valor_medido = pedir_float(f"Valor registrado para {sensor['tipo']}")
     
-    # Analisa o risco no momento da coleta
     status_alerta = analisar_alerta(sensor["tipo"], valor_medido)
     data_hora_atual = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
 

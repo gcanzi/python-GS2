@@ -6,17 +6,13 @@ Responsável pela leitura e escrita segura da base de dados em formato JSON.
 import json
 import os
 
-# Constante de configuração do banco de dados
+# Configuração do banco de dados
 ARQUIVO_DADOS = "banco_dados.json"
 
 def carregar_dados() -> dict:
-    """
-    Carrega o banco de dados do sistema.
-    Retorna a estrutura vazia padrão caso o arquivo não exista ou esteja corrompido.
-    """
+    # Carrega os dados do arquivo JSON ou retorna a estrutura vazia padrão
     estrutura_padrao = {"sensores": [], "medicoes": []}
 
-    # Verifica se o arquivo existe antes de tentar abrir
     if not os.path.exists(ARQUIVO_DADOS):
         return estrutura_padrao
 
@@ -24,7 +20,6 @@ def carregar_dados() -> dict:
         with open(ARQUIVO_DADOS, "r", encoding="utf-8") as f:
             dados = json.load(f)
             
-            # Validação estrutural de integridade
             if "sensores" not in dados or "medicoes" not in dados:
                 return estrutura_padrao
                 
@@ -38,11 +33,8 @@ def carregar_dados() -> dict:
         return estrutura_padrao
 
 def salvar_dados(dados: dict) -> None:
-    """
-    Persiste os dados em disco formatados com indentação para legibilidade.
-    """
+    # Salva a estrutura de dados atualizada no arquivo JSON
     try:
-        # A flag 'w' substitui o arquivo com os dados mais recentes
         with open(ARQUIVO_DADOS, "w", encoding="utf-8") as f:
             json.dump(dados, f, indent=4, ensure_ascii=False)
     except PermissionError:

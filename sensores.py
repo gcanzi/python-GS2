@@ -13,25 +13,18 @@ from utilidades import (
 )
 
 def buscar_sensor(sensores: list, id_sensor: int) -> dict | None:
-    """
-    Realiza uma busca linear na lista de sensores.
-    Retorna o dicionário do sensor se encontrado, ou None caso contrário.
-    """
+    # Busca um sensor pelo ID na lista e retorna seus dados
     for sensor in sensores:
         if sensor["id"] == id_sensor:
             return sensor
     return None
 
 def cadastrar_sensor(sensores: list) -> None:
-    """
-    Fluxo de registro de um novo equipamento.
-    Garante que não existam IDs duplicados no sistema.
-    """
+    # Realiza o cadastro de um novo equipamento, validando IDs duplicados
     cabecalho("Cadastrar Novo Sensor")
     
     id_sensor = pedir_inteiro("ID do Sensor (numérico)")
     
-    # Validação de regra de negócio: Unicidade de ID
     if buscar_sensor(sensores, id_sensor) is not None:
         print(f"\n  [!] Falha no registro: O ID {id_sensor} já está em uso por outro equipamento.")
         pausar()
@@ -54,9 +47,7 @@ def cadastrar_sensor(sensores: list) -> None:
     pausar()
 
 def listar_sensores(sensores: list) -> None:
-    """
-    Exibe o inventário completo de sensores ativos na infraestrutura.
-    """
+    # Exibe o inventário de todos os sensores cadastrados
     cabecalho("Inventário de Sensores")
 
     if not sensores:
